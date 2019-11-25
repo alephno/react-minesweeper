@@ -1,0 +1,40 @@
+{
+  "name": "react-minesweeper",
+  "version": "1.0.0",
+  "description": "Minesweeper implemented in React",
+  "main": "server.js",
+  "scripts": {
+    "build:dev": "webpack --watch --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alephno/react-minesweeper.git"
+  },
+  "keywords": [
+    "Minesweeper",
+    "React"
+  ],
+  "author": "Alastair Williams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alephno/react-minesweeper/issues"
+  },
+  "homepage": "https://github.com/alephno/react-minesweeper#readme",
+  "dependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "@types/node": "^12.12.12",
+    "@types/react": "^16.9.13",
+    "@types/react-dom": "^16.9.4",
+    "babel-loader": "^8.0.6",
+    "express": "^4.17.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
