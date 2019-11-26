@@ -1,4 +1,5 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import Minesweeper from './components/Minesweeper'
 
-ReactDOM.render(<h1>Hello, World!</h1>, document.querySelector('#app-root'))
+ReactDOM.render(<Minesweeper />, document.querySelector('#app-root'))

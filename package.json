@@ -2,9 +2,11 @@
   "name": "react-minesweeper",
   "version": "1.0.0",
   "description": "Minesweeper implemented in React",
-  "main": "server.js",
+  "main": "./server/server.js",
   "scripts": {
-    "build:dev": "webpack --watch --mode development"
+    "build:dev": "webpack --watch --mode development",
+    "start": "node ./server/server.js",
+    "start:dev": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
     "@types/react-dom": "^16.9.4",
     "babel-loader": "^8.0.6",
     "express": "^4.17.1",
+    "nodemon": "^2.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "source-map-loader": "^0.2.4",

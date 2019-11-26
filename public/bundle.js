@@ -95,13 +95,194 @@
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
-react_dom_1.default.render(react_1.default.createElement("h1", null, "Hello, World!"), document.querySelector('#app-root'));
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
+const Minesweeper_1 = __importDefault(__webpack_require__(/*! ./components/Minesweeper */ "./client/components/Minesweeper.tsx"));
+ReactDOM.render(React.createElement(Minesweeper_1.default, null), document.querySelector('#app-root'));
+
+
+/***/ }),
+
+/***/ "./client/components/Board.tsx":
+/*!*************************************!*\
+  !*** ./client/components/Board.tsx ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const Tile_1 = __importDefault(__webpack_require__(/*! ./Tile */ "./client/components/Tile.tsx"));
+const makeEmptyBoard = (size) => [...Array(size)].map(() => [...Array(size)].map(() => [0, false]));
+const newBoard = (size) => {
+    const board = makeEmptyBoard(size);
+    const allIndices = [...Array(size * size).keys()].map(i => [Math.floor(i / size), i % size]);
+    const randomIndex = () => Math.floor(Math.random() * allIndices.length);
+    const updateNeighbors = (x, y) => {
+        // only increment mine count if the tile is not a mine
+        const newValue = (value) => value >= 0 ? value + 1 : value;
+        // check that row, col is on the board
+        const inBounds = (row, col) => row >= 0 &&
+            row < size &&
+            col >= 0 &&
+            col < size;
+        const left = x - 1;
+        const right = x + 1;
+        const up = y - 1;
+        const down = y + 1;
+        const neighbors = [
+            [left, y], [left, up], [left, down],
+            [x, up], [x, down],
+            [right, y], [right, up], [right, down] // right neighbors
+        ];
+        neighbors.forEach(neighbor => {
+            const [nX, nY] = neighbor;
+            if (inBounds(nX, nY)) {
+                board[nX][nY][0] = newValue(board[nX][nY][0]);
+            }
+        });
+    };
+    // get 'size' number of random indices
+    // remove an index from the bag of all indices to prevent picking it again
+    const mines = [...Array(size).keys()].map(() => allIndices.splice(randomIndex(), 1)[0]);
+    mines.forEach(mine => {
+        const [mX, mY] = mine;
+        board[mX][mY][0] = -1;
+        updateNeighbors(mX, mY);
+    });
+    return board;
+};
+function Board(props) {
+    const empty = makeEmptyBoard(props.size);
+    const [board, setBoard] = React.useState(newBoard(props.size));
+    const revealMine = (x, y, e) => {
+        const _newBoard = board.slice();
+        _newBoard[x][y][1] = false;
+        setBoard(_newBoard);
+    };
+    return (React.createElement("section", { style: { display: 'grid', gridTemplateColumns: `repeat(${props.size}, 1.5em)`, gridAutoRows: '1.5em' } }, board.map((row, x) => row.map((col, y) => {
+        return React.createElement(Tile_1.default, { key: x * props.size + y, value: col[0], hidden: col[1], onClick: (e) => revealMine(x, y, e) });
+    }))));
+}
+exports.default = Board;
+
+
+/***/ }),
+
+/***/ "./client/components/Header.tsx":
+/*!**************************************!*\
+  !*** ./client/components/Header.tsx ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function Header() {
+    return (React.createElement("h1", null, "Minesweeper"));
+}
+exports.default = Header;
+
+
+/***/ }),
+
+/***/ "./client/components/Minesweeper.tsx":
+/*!*******************************************!*\
+  !*** ./client/components/Minesweeper.tsx ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const Header_1 = __importDefault(__webpack_require__(/*! ./Header */ "./client/components/Header.tsx"));
+const Board_1 = __importDefault(__webpack_require__(/*! ./Board */ "./client/components/Board.tsx"));
+function Minesweeper() {
+    return (React.createElement(React.Fragment, null,
+        React.createElement(Header_1.default, null),
+        React.createElement(Board_1.default, { size: 10 })));
+}
+exports.default = Minesweeper;
+
+
+/***/ }),
+
+/***/ "./client/components/Tile.tsx":
+/*!************************************!*\
+  !*** ./client/components/Tile.tsx ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function Tile(props) {
+    const format = (value) => {
+        switch (value) {
+            case -1:
+                return '*';
+            case 0:
+                return '-';
+            default:
+                return value;
+        }
+    };
+    return (React.createElement("button", { onClick: props.onClick }, props.hidden ? '' : format(props.value)));
+}
+exports.default = Tile;
 
 
 /***/ }),
